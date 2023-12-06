@@ -1,4 +1,7 @@
 package fr.diginamic.immobilier.entites;
+
+import java.util.Objects;
+
 /** Représente une maison avec toutes ses pièces
  * @author DIGINAMIC
  *
@@ -20,7 +23,10 @@ public class Maison {
 	 * @param nvPiece nouvelle pièce à ajouter
 	 */
 	public void ajouterPiece(Piece nvPiece) {
-		
+
+		if (nvPiece == null) {
+			return;
+		}
 		// On est obligé d'agrandir le tableau initial de 1 à chaque ajout
 		// d'une nouvelle pièce
 		
@@ -50,6 +56,8 @@ public class Maison {
 	 * @return double
 	 */
 	public double superficieEtage(int choixEtage) {
+		Objects.requireNonNull(choixEtage, "Le choix d'étage ne peut pas être nul.");
+
 		double superficieEtage = 0;
 
 		for (int i = 0; i < pieces.length; i++) {
@@ -66,11 +74,16 @@ public class Maison {
 	 * @return double
 	 */
 	public double superficieTypePiece(String typePiece) {
+
+		if (typePiece == null) {
+			return 0.0; // Traitement du cas où typePiece est NULL
+		}
+
 		double superficie = 0;
 
 		for (int i = 1; i < pieces.length; i++) {
-			if (typePiece!=null && typePiece.equals(this.pieces[i].getType())) {
-				superficie = superficie + this.pieces[i].getSuperficie();
+			if (typePiece.equals(this.pieces[i].getType())) {
+				superficie += this.pieces[i].getSuperficie();
 			}
 		}
 
@@ -84,7 +97,9 @@ public class Maison {
 		double superficieTot = 0;
 
 		for (int i = 0; i < pieces.length; i++) {
-			superficieTot = superficieTot + this.pieces[i].getSuperficie();
+			if (pieces[i] != null) {
+				superficieTot = superficieTot + this.pieces[i].getSuperficie();
+			}
 		}
 
 		return superficieTot;
